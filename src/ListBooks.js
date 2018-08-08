@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types'
+
 
 // take the bookdata and pull books that specifically match the passed prop shelfName
   // render each book as shown in the sample below
@@ -125,7 +127,11 @@ import React, { Component } from 'react';
    */
 
 class ListBooks extends Component {
-  
+  static propTypes = {
+    bookShelf: PropTypes.string.isRequired,
+    bookList: PropTypes.array.isRequired
+  }
+
    render() {
      return (
       <ol className="books-grid">
