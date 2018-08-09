@@ -7,10 +7,10 @@ import ListBooks from './ListBooks.js'
 class BooksApp extends React.Component {
   state = {
     bookData: [], // stores raw server data
+    bookID: {}, // allows react to pickup book shelf changes
+    bookShelf: '', // initializes bookShelf
+
     // initiate our local variables of what each shelf contains
-    Read: [],
-    wantToRead: [],
-    currentlyReading: [],
     /**
      * TODO: Instead of using this state variable to keep track of which page
      * we're on, use the URL in the browser's address bar. This will ensure that
@@ -24,6 +24,23 @@ class BooksApp extends React.Component {
     BooksAPI.getAll().then((bookData => {
       this.setState({ bookData })
     }))
+  }
+  //set a local prop to update our server based on changes on a child component
+  // an array is passed with the [0] = bookID and [1] = shelf
+  updateBook = (book, shelf) => {
+    this.setState({ // update the states before using them to call BooksAPI.update()
+      bookID: book, 
+      bookShelf: shelf
+    }, () => { // set booksAPI as a callback so that it runs after the states are updated
+      BooksAPI.update(this.state.bookID, this.state.bookShelf).then(() =>{
+        BooksAPI.getAll().then((bookData => {
+          this.setState({ bookData }, () => {
+            console.log(book + ' '+ shelf + ' updated!');
+          }) // updates the app's version of the shelves for children to update
+        }))
+      })
+    })
+    //children are not changing because the data is stale
   }
 
   render() {
@@ -63,6 +80,7 @@ class BooksApp extends React.Component {
                     <ListBooks 
                     bookList={this.state.bookData}
                     bookShelf={'currentlyReading'}
+                    updateBook={this.updateBook}
                     />
                   </div>
                 </div>
@@ -72,6 +90,7 @@ class BooksApp extends React.Component {
                     <ListBooks
                     bookList={this.state.bookData}
                     bookShelf={'wantToRead'}
+                    updateBook={this.updateBook}
                     />
                   </div>
                 </div>
@@ -81,6 +100,7 @@ class BooksApp extends React.Component {
                     <ListBooks 
                     bookList={this.state.bookData}
                     bookShelf={'read'}
+                    updateBook={this.updateBook}
                     />
                   </div>
                 </div>

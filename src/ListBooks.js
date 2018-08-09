@@ -128,22 +128,49 @@ import PropTypes from 'prop-types'
 
 class ListBooks extends Component {
   static propTypes = {
-    bookShelf: PropTypes.string.isRequired,
-    bookList: PropTypes.array.isRequired
+    bookShelf: PropTypes.string.isRequired, // require the shelf for the list to be passed
+    bookList: PropTypes.array.isRequired, // require the library of books to be passed
+    updateBook: PropTypes.func.isRequired // require the booksAPI method to be passed
   }
 
+  state = {
+    selectedOption: '',
+    bookID: ''
+  }
+  
+  handleBookUpdate = (bookID, shelf) => {
+    //convert id into an accepted object
+    let objID = {id:bookID}
+    this.props.updateBook(objID, shelf)
+  }
+
+  handleSelection = (event) => {
+    this.setState({ //update the selected option and book ID states
+      selectedOption: event.target.value,
+      bookID: event.target.id
+    }, () => { // update on setState's callback so that it is using newest states
+      console.log(this.state.selectedOption + ' '+ this.state.bookID)
+      this.handleBookUpdate(this.state.bookID, this.state.selectedOption)
+    })
+  }
+  
    render() {
+     const { bookShelf, bookList } = this.props;
+
      return (
       <ol className="books-grid">
-        {this.props.bookList.map((book) => (
-          ((book.shelf === this.props.bookShelf) && (<li key={book.id}>
+        {bookList.map((book) => (
+          ((book.shelf === bookShelf) && (<li key={book.id}>
             <div className="book">
               <div className="book-top">
                 <div className="book-cover" style= {{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail}`}}></div>
                   <div className="book-shelf-changer">
-                    <select>
+                    <select 
+                    id={book.id}
+                    onChange={this.handleSelection} 
+                    value={this.state.selectedOption}>
                       <option value="move" disabled>Move to...</option>
-                      <option value="currentlyReading">Move to...</option>
+                      <option value="currentlyReading">Currently Reading</option>
                       <option value="wantToRead">Want to Read</option>
                       <option value="read">Read</option>
                       <option value="none">None</option>
