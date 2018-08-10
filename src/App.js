@@ -9,6 +9,7 @@ class BooksApp extends React.Component {
     bookData: [], // stores raw server data
     bookID: {}, // allows react to pickup book shelf changes
     bookShelf: '', // initializes bookShelf
+    searchResults: [], // initializes search results
 
     // initiate our local variables of what each shelf contains
     /**
@@ -26,8 +27,15 @@ class BooksApp extends React.Component {
     }))
   }
 
-  handleSearchClose = () => {
+  handleSearchClose = () => { // manipulates searchPage state
     this.setState({showSearchPage: false})
+  }
+
+  searchBooks = (query) => { // searches the server for given query
+    console.log(query)
+    BooksAPI.search(query).then((res) => { //search for results
+      this.setState({ searchResults:res }) // update searchResults state
+    })
   }
 
   //set a local prop to update our server based on changes on a child component
@@ -52,7 +60,10 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
         {this.state.showSearchPage ? (
-          <SearchList handleSearchClose={this.handleSearchClose}/>
+          <SearchList handleSearchClose={this.handleSearchClose} 
+          searchBooks={this.searchBooks}
+          searchResults={this.state.searchResults}
+          />
         ) : (
           <div className="list-books">
             <div className="list-books-title">
