@@ -28,13 +28,17 @@ class BooksApp extends React.Component {
   }
 
   handleSearchClose = () => { // manipulates searchPage state
-    this.setState({showSearchPage: false})
+    this.setState({showSearchPage: false,
+      searchResults: [] // clear search results
+    })
   }
 
   searchBooks = (query) => { // searches the server for given query
     console.log(query)
     BooksAPI.search(query).then((res) => { //search for results
-      this.setState({ searchResults:res }) // update searchResults state
+      (Array.isArray(res)) ? (
+      this.setState({ searchResults:res }, ()=>console.log(res)) // update searchResults state
+    ) : ( this.setState({ searchResults: []}))
     })
   }
 

@@ -62,7 +62,7 @@ class SearchList extends React.Component {
         </div>
           <div className="search-books-results">
             <ol className="books-grid">
-              {searchResults.map((book) => (
+              {((searchResults !== undefined) && (searchResults.map((book) => (
                 <li key={book.id}>
                 <div className="book">
                   <div className="book-top">
@@ -87,7 +87,7 @@ class SearchList extends React.Component {
                   <div className="book-authors">{(book.authors !== undefined && book.authors.join(' '))}</div>
                 </div>
               </li>
-              ))}
+              ))))}
             </ol>
           </div>
       </div>
