@@ -9,11 +9,30 @@ class SearchList extends React.Component {
 
   state = {
     query: '',
+    selectedOption: '',
+    bookID: ''
   }
 
   updateQuery = (query) => {
     this.setState({ query: query}) // potentially add .trim()
     this.props.searchBooks(query)
+  }
+
+  handleBookUpdate = (bookID, shelf) => {
+    //convert id into an accepted object
+    let objID = {id:bookID}
+    this.props.updateBook(objID, shelf)
+  }
+
+  
+  handleSelection = (event) => {
+    this.setState({ //update the selected option and book ID states
+      selectedOption: event.target.value,
+      bookID: event.target.id
+    }, () => { // update on setState's callback so that it is using newest states
+      console.log(this.state.selectedOption + ' '+ this.state.bookID)
+      this.handleBookUpdate(this.state.bookID, this.state.selectedOption)
+    })
   }
 
   render() {
