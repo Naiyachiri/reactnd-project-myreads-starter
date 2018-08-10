@@ -134,8 +134,8 @@ class ListBooks extends Component {
   }
 
   state = {
-    selectedOption: '',
-    bookID: ''
+    selectedOption: this.props.bookShelf, // initialize selections to the shelf book resides upon
+    bookID: '',
   }
   
   handleBookUpdate = (bookID, shelf) => {
@@ -145,15 +145,17 @@ class ListBooks extends Component {
   }
 
   handleSelection = (event) => {
-    this.setState({ //update the selected option and book ID states
+    this.setState({ //update the selected option and book ID states only if the selected value is not the same as previously selected
       selectedOption: event.target.value,
+      previouslySelectedOption: event.target.value,
       bookID: event.target.id
     }, () => { // update on setState's callback so that it is using newest states
       console.log(this.state.selectedOption + ' '+ this.state.bookID)
       this.handleBookUpdate(this.state.bookID, this.state.selectedOption)
+      this.setState({ selectedOption: this.props.bookShelf}) // return selection back to proper shelf
     })
   }
-  
+
    render() {
      const { bookShelf, bookList } = this.props;
 

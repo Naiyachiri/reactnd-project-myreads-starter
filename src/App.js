@@ -9,6 +9,7 @@ class BooksApp extends React.Component {
     bookData: [], // stores raw server data
     bookID: {}, // allows react to pickup book shelf changes
     bookShelf: '', // initializes bookShelf
+    queryBookShelf: '', // seperate state to monitor searched res's shelf
     searchResults: [], // initializes search results
 
     // initiate our local variables of what each shelf contains
@@ -47,9 +48,9 @@ class BooksApp extends React.Component {
   updateBook = (book, shelf) => {
     this.setState({ // update the states before using them to call BooksAPI.update()
       bookID: book, 
-      bookShelf: shelf
+      queryBookShelf: shelf
     }, () => { // set booksAPI as a callback so that it runs after the states are updated
-      BooksAPI.update(this.state.bookID, this.state.bookShelf).then(() =>{
+      BooksAPI.update( this.state.bookID, this.state.queryBookShelf ).then(() =>{
         BooksAPI.getAll().then((bookData => {
           this.setState({ bookData }, () => {
             console.log(book + ' '+ shelf + ' updated!');

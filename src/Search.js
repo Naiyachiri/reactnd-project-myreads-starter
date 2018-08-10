@@ -26,14 +26,16 @@ class SearchList extends React.Component {
 
   
   handleSelection = (event) => {
-    this.setState({ //update the selected option and book ID states
+    this.setState({ //update the selected option and book ID states only if the selected value is not the same as previously selected
       selectedOption: event.target.value,
+      previouslySelectedOption: event.target.value,
       bookID: event.target.id
     }, () => { // update on setState's callback so that it is using newest states
       console.log(this.state.selectedOption + ' '+ this.state.bookID)
       this.handleBookUpdate(this.state.bookID, this.state.selectedOption)
     })
   }
+
 
   render() {
     const { searchResults } = this.props
@@ -62,7 +64,7 @@ class SearchList extends React.Component {
         </div>
           <div className="search-books-results">
             <ol className="books-grid">
-              {((searchResults !== undefined) && (searchResults.map((book) => (
+              {((searchResults !== undefined ) && (searchResults.map((book) => (
                 <li key={book.id}>
                 <div className="book">
                   <div className="book-top">
