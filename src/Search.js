@@ -10,7 +10,8 @@ class SearchList extends React.Component {
   state = {
     query: '',
     selectedOption: '',
-    bookID: ''
+    bookID: '',
+    bookListID: {}
   }
 
   updateQuery = (query) => {
@@ -24,7 +25,6 @@ class SearchList extends React.Component {
     this.props.updateBook(objID, shelf)
   }
 
-  
   handleSelection = (event) => {
     this.setState({ //update the selected option and book ID states only if the selected value is not the same as previously selected
       selectedOption: event.target.value,
@@ -36,6 +36,18 @@ class SearchList extends React.Component {
     })
   }
 
+  updateResultShelf = () => {
+    for (var id in this.state.bookListID) {
+      document.querySelector('#' + id).value = this.state.bookListID[id]; // set selector equal to the bookList's shelf
+    }
+  }
+
+  componentDidMount() {
+    let initBookListID = {}
+    this.props.bookList.forEach((book) => (initBookListID[book.id] = book.shelf))
+    console.log(initBookListID)
+    this.setState({bookListID: initBookListID}) // set the state to store the bookList of IDs
+  }
 
   render() {
     const { searchResults } = this.props
@@ -60,7 +72,6 @@ class SearchList extends React.Component {
             onChange={(event) => this.updateQuery(event.target.value)}
             />
           </div>
-          {this.state.query}
         </div>
           <div className="search-books-results">
             <ol className="books-grid">
@@ -75,8 +86,9 @@ class SearchList extends React.Component {
                       <div className="book-shelf-changer">
                         <select 
                         id={book.id}
-                        onChange={this.handleSelection} 
-                        value={this.state.selectedOption}>
+                        value={((this.state.bookListID !== undefined) ? (this.state.bookListID[book.id]) : ('none'))}
+                        onChange={this.handleSelection}
+                        >
                           <option value="move" disabled>Move to...</option>
                           <option value="currentlyReading">Currently Reading</option>
                           <option value="wantToRead">Want to Read</option>

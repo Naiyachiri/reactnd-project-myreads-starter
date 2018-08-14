@@ -43,6 +43,7 @@ class BooksApp extends React.Component {
     })
   }
 
+
   //set a local prop to update our server based on changes on a child component
   // an array is passed with the [0] = bookID and [1] = shelf
   updateBook = (book, shelf) => {
@@ -69,6 +70,7 @@ class BooksApp extends React.Component {
           searchBooks={this.searchBooks}
           searchResults={this.state.searchResults}
           updateBook={this.updateBook}
+          bookList={this.state.bookData}
           />
         ) : (
           <div className="list-books">

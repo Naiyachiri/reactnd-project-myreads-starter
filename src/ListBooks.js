@@ -162,7 +162,7 @@ class ListBooks extends Component {
      return (
       <ol className="books-grid">
         {bookList.map((book) => (
-          ((book.shelf === bookShelf) && (<li key={book.id}>
+          ((book.shelf === bookShelf) && (<li key={book.id} id={book.id}>
             <div className="book">
               <div className="book-top">
                 <div className="book-cover" style= {{ width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail}`}}></div>
