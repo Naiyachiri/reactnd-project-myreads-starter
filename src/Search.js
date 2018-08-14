@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 class SearchList extends React.Component {
   static propTypes = {
@@ -55,7 +56,9 @@ class SearchList extends React.Component {
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <a className="close-search" onClick={this.props.handleSearchClose}>Close</a>
+          <Link
+            to="/"
+            className="close-search">Close</Link>
           <div className="search-books-input-wrapper">
             {/*
               NOTES: The search from BooksAPI is limited to a particular set of search terms.
