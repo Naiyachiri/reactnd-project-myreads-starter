@@ -37,13 +37,13 @@ class SearchList extends React.Component {
   }
 
   updateResultShelf = () => {
-    for (var id in this.state.bookListID) {
+    for (var id in this.state.bookListID) { // using the current state set the selectors based on ID values to be equal to the book's shelf
       document.querySelector('#' + id).value = this.state.bookListID[id]; // set selector equal to the bookList's shelf
     }
   }
 
   componentDidMount() {
-    let initBookListID = {}
+    let initBookListID = {} // initialize storage for shelf state
     this.props.bookList.forEach((book) => (initBookListID[book.id] = book.shelf))
     console.log(initBookListID)
     this.setState({bookListID: initBookListID}) // set the state to store the bookList of IDs
@@ -86,7 +86,7 @@ class SearchList extends React.Component {
                       <div className="book-shelf-changer">
                         <select 
                         id={book.id}
-                        value={((this.state.bookListID !== undefined) ? (this.state.bookListID[book.id]) : ('none'))}
+                        value={((this.state.bookListID[book.id] !== undefined) ? (this.state.bookListID[book.id]) : ('none'))}
                         onChange={this.handleSelection}
                         >
                           <option value="move" disabled>Move to...</option>
