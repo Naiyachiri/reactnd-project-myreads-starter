@@ -22,12 +22,6 @@ class BooksApp extends React.Component {
     }))
   }
 
-  handleSearchClose = () => { // manipulates searchPage state
-    this.setState({showSearchPage: false,
-      searchResults: [] // clear search results
-    })
-  }
-
   searchBooks = (query) => { // searches the server for given query
     console.log(query)
     BooksAPI.search(query).then((res) => { //search for results
@@ -60,7 +54,7 @@ class BooksApp extends React.Component {
     return (
       <div className="app">
           <Route exact path="/search" render={() => (
-            <SearchList handleSearchClose={this.handleSearchClose} 
+            <SearchList 
           searchBooks={this.searchBooks}
           searchResults={this.state.searchResults}
           updateBook={this.updateBook}
@@ -110,7 +104,7 @@ class BooksApp extends React.Component {
               <Link
                 to="/search"
                 onClick={() => (
-                this.setState({ showSearchPage: true })
+                this.setState({ searchResults: [] })
                 )}>Add a book</Link>
             </div>
           </div>
